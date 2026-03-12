@@ -1,0 +1,14 @@
+{
+  "name": "hbprojects",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "docker compose up",
+    "dev:build": "docker compose up --build",
+    "dev:detached": "docker compose up -d",
+    "stop": "docker compose down",
+    "logs": "docker compose logs -f",
+    "logs:server": "docker compose logs -f $(grep -A1 'server:' docker-compose.yml | grep 'container_name:' | awk '{print $2}' | tr '\\n' ' ')",
+    "restart": "docker compose restart",
+    "clean": "docker compose down -v && docker system prune -f"
+  }
+}

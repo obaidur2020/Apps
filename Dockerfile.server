@@ -1,0 +1,22 @@
+FROM node:20-alpine
+
+# Install build dependencies and ts-node, nodemon, typescript globally
+RUN apk add --no-cache python3 make g++ && \
+    npm install -g typescript ts-node nodemon
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --legacy-peer-deps
+
+# Copy source files
+COPY . .
+
+# Expose port (default, will be overridden by compose)
+EXPOSE 3000
+
+# Start development server
+CMD ["npm", "run", "dev"]

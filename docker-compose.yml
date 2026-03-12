@@ -1,0 +1,258 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-dev
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  blog-platform-server:
+    build: ./apps/blog-platform/server
+    container_name: blog-platform-server
+    ports:
+      - "5005:5005"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/blog-platform
+      - PORT=5005
+      - CLIENT_ORIGIN=http://localhost:5173
+    volumes:
+      - ./apps/blog-platform/server:/app
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  blog-platform-client:
+    build: ./apps/blog-platform/client
+    container_name: blog-platform-client
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5005
+    volumes:
+      - ./apps/blog-platform/client:/app
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  calendar-app-server:
+    build: ./apps/calendar-app/server
+    container_name: calendar-app-server
+    ports:
+      - "5002:5002"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/calendar-app
+      - PORT=5002
+      - CLIENT_URL=http://localhost:5174
+    volumes:
+      - ./apps/calendar-app/server:/app
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  calendar-app-client:
+    build: ./apps/calendar-app/client
+    container_name: calendar-app-client
+    ports:
+      - "5174:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5002
+    volumes:
+      - ./apps/calendar-app/client:/app
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  code-snippets-server:
+    build: ./apps/code-snippets/server
+    container_name: code-snippets-server
+    ports:
+      - "5003:5003"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/code-snippets
+      - PORT=5003
+      - CLIENT_ORIGIN=http://localhost:5175
+    volumes:
+      - ./apps/code-snippets/server:/app
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  code-snippets-client:
+    build: ./apps/code-snippets/client
+    container_name: code-snippets-client
+    ports:
+      - "5175:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5003
+    volumes:
+      - ./apps/code-snippets/client:/app
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  music-playlist-server:
+    build: ./apps/music-playlist/server
+    container_name: music-playlist-server
+    ports:
+      - "5007:5007"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/music-playlist
+      - PORT=5007
+      - CLIENT_ORIGIN=http://localhost:5176
+    volumes:
+      - ./apps/music-playlist/server:/app
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  music-playlist-client:
+    build: ./apps/music-playlist/client
+    container_name: music-playlist-client
+    ports:
+      - "5176:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5007
+    volumes:
+      - ./apps/music-playlist/client:/app
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  news-aggregator-server:
+    build: ./apps/news-aggregator/server
+    container_name: news-aggregator-server
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/news-aggregator
+      - PORT=5001
+      - CLIENT_URL=http://localhost:5177
+    volumes:
+      - ./apps/news-aggregator/server:/app
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  news-aggregator-client:
+    build: ./apps/news-aggregator/client
+    container_name: news-aggregator-client
+    ports:
+      - "5177:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5001
+    volumes:
+      - ./apps/news-aggregator/client:/app
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  real-estate-server:
+    build: ./apps/real-estate/server
+    container_name: real-estate-server
+    ports:
+      - "5006:5006"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/real-estate
+      - PORT=5006
+      - CLIENT_ORIGIN=http://localhost:5178
+    volumes:
+      - ./apps/real-estate/server:/app
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  real-estate-client:
+    build: ./apps/real-estate/client
+    container_name: real-estate-client
+    ports:
+      - "5178:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5006
+    volumes:
+      - ./apps/real-estate/client:/app
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  todo-app-server:
+    build: ./apps/todo-app/server
+    container_name: todo-app-server
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/todo-app
+      - PORT=5000
+      - CLIENT_URL=http://localhost:5179
+    volumes:
+      - ./apps/todo-app/server:/app
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  todo-app-client:
+    build: ./apps/todo-app/client
+    container_name: todo-app-client
+    ports:
+      - "5179:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5000
+    volumes:
+      - ./apps/todo-app/client:/app
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  weather-app-server:
+    build: ./apps/weather-app/server
+    container_name: weather-app-server
+    ports:
+      - "5004:5004"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/weather-app
+      - PORT=5004
+      - CLIENT_ORIGIN=http://localhost:5180
+    volumes:
+      - ./apps/weather-app/server:/app
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  weather-app-client:
+    build: ./apps/weather-app/client
+    container_name: weather-app-client
+    ports:
+      - "5180:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5004
+    volumes:
+      - ./apps/weather-app/client:/app
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  mongodb-data:
+
+networks:
+  app-network:
+    driver: bridge
